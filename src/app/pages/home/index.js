@@ -1,11 +1,10 @@
 import React from 'react';
-import Page from '../../components/page';
+import Layout from '../../shared/components/Layout';
 
 import logo from '../../assets/logo.jpg';
 
 export default () => (
-  <Page id="homepage">
+  <Layout id="homepage">
     <p>Here's our homepage. All are welcome.</p>
-    <img src={logo} alt="Homepage" style={{ width: '400px' }} />
-  </Page>
+  </Layout>
 );

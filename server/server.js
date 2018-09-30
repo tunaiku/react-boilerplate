@@ -1,4 +1,3 @@
-// Express requirements
 import bodyParser from 'body-parser';
 import compression from 'compression';
 import express from 'express';
@@ -18,21 +17,19 @@ const PORT = process.env.PORT || 3000;
 // NOTE: UNCOMMENT THIS IF YOU WANT THIS FUNCTIONALITY
 /*
   Forcing www and https redirects in production, totally optional.
-
   http://mydomain.com
   http://www.mydomain.com
   https://mydomain.com
-
   Resolve to: https://www.mydomain.com
 */
-// if (process.env.NODE_ENV === 'production') {
-//   app.use(
-//     forceDomain({
-//       hostname: 'www.mydomain.com',
-//       protocol: 'https'
-//     })
-//   );
-// }
+if (process.env.NODE_ENV === 'production') {
+  app.use(
+    forceDomain({
+      hostname: 'www.mydomain.com',
+      protocol: 'https'
+    })
+  );
+}
 
 // Compress, parse, log, and raid the cookie jar
 app.use(compression());
