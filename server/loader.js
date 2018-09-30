@@ -4,7 +4,7 @@ import fs from 'fs';
 
 // React requirements
 import React from 'react';
-import { renderToStringWithData } from 'react-apollo';
+import { renderToString } from 'react-dom/server';
 import Helmet from 'react-helmet';
 import { Provider } from 'react-redux';
 import { StaticRouter } from 'react-router';
@@ -17,21 +17,6 @@ import App from '../src/app/App';
 import manifest from '../build/asset-manifest.json';
 
 // Some optional Redux functions related to user authentication
-// import { setCurrentUser, logoutUser } from '../src/modules/auth';
-
-import { ApolloProvider } from 'react-apollo';
-import { ApolloClient } from 'apollo-client';
-import { createHttpLink } from 'apollo-link-http';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import 'isomorphic-fetch';
-import { split } from 'apollo-link';
-import { setContext } from 'apollo-link-context';
-import { WebSocketLink } from 'apollo-link-ws';
-import { getMainDefinition } from 'apollo-utilities';
-import cookies from 'js-cookie';
-import { AUTH_TOKEN } from '../src/app/shared/constants/auth';
-
-const HOSTNAME = process.env.HOSTNAME;
 
 // LOADER
 export default (req, res) => {
@@ -52,48 +37,6 @@ export default (req, res) => {
     return data;
   };
 
-  const wsLink = process.browser
-    ? new WebSocketLink({
-        // if you instantiate in the server, the error will be thrown
-        uri: `ws://${HOSTNAME}:4000`,
-        options: {
-          reconnect: true
-        }
-      })
-    : null;
-
-  const authLink = setContext((_, { headers }) => {
-    const token = cookies.get(AUTH_TOKEN);
-    return {
-      headers: {
-        ...headers,
-        authorization: token ? `Bearer ${token}` : ''
-      }
-    };
-  });
-
-  const httplink = new createHttpLink({
-    uri: `http://${HOSTNAME}:4000`
-  });
-
-  const link = process.browser
-    ? split(
-        ({ query }) => {
-          const { kind, operation } = getMainDefinition(query);
-          return kind === 'OperationDefinition' && operation === 'subscription';
-        },
-        wsLink,
-        authLink.concat(httplink)
-      )
-    : httplink;
-
-  const client = new ApolloClient({
-    link,
-    ssrForceFetchDelay: 100,
-    ssrMode: true,
-    cache: new InMemoryCache()
-  });
-
   // Load in our HTML file from our build
   fs.readFile(path.resolve(__dirname, '../build/index.html'), 'utf8', (err, htmlData) => {
     // If there's an error... serve up something nasty
@@ -108,11 +51,6 @@ export default (req, res) => {
 
     // If the user has a cookie (i.e. they're signed in) - set them as the current user
     // Otherwise, we want to set the current state to be logged out, just in case this isn't the default
-    // if ('mywebsite' in req.cookies) {
-    //   store.dispatch(setCurrentUser(req.cookies.mywebsite));
-    // } else {
-    //   store.dispatch(logoutUser());
-    // }
 
     const context = {};
     const modules = [];
@@ -131,16 +69,14 @@ export default (req, res) => {
         then loaded into the correct components and sent as a Promise to be handled below.
       */
     frontloadServerRender(() =>
-      renderToStringWithData(
+      renderToString(
         <Loadable.Capture report={m => modules.push(m)}>
           <Provider store={store}>
-            <ApolloProvider client={client}>
-              <StaticRouter location={req.url} context={context}>
-                <Frontload isServer>
-                  <App />
-                </Frontload>
-              </StaticRouter>
-            </ApolloProvider>
+            <StaticRouter location={req.url} context={context}>
+              <Frontload isServer>
+                <App />
+              </Frontload>
+            </StaticRouter>
           </Provider>
         </Loadable.Capture>
       )
@@ -169,6 +105,7 @@ export default (req, res) => {
 
         // NOTE: Disable if you desire
         // Let's output the title, just to see SSR is working as intended
+        console.log('THE TITLE', helmet.title.toString());
 
         // Pass all this nonsense into our HTML formatting function above
         const html = injectHTML(htmlData, {

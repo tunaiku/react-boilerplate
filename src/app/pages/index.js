@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Loadable from 'react-loadable';
-
 import NotFound from './not-found';
 
 const Homepage = Loadable({

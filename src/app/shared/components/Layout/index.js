@@ -2,14 +2,15 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import Helmet from 'react-helmet';
 
-const SITE_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://cra-ssr.herokuapp.com';
+const mySitename = '';
+const SITE_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : mySitename;
 
 const FACEBOOK_APP_ID = 'XXXXXXXXX';
 
 const defaultTitle = 'My Website';
 const defaultDescription = 'This is a really awesome website where we can render on the server. Supa cool.';
 const defaultImage = `${SITE_URL}`;
-const defaultTwitter = '@cereallarceny';
+const defaultTwitter = '';
 const defaultSep = ' | ';
 
 class Layout extends Component {
