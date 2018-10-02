@@ -5,7 +5,7 @@ import { withRouter } from 'react-router';
 
 // Action creators and helpers
 
-import Header from './shared/components/Header';
+import Header from './shared/components/header';
 import Routes from './pages';
 
 class App extends Component {

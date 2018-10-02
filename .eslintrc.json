@@ -19,6 +19,8 @@
     "max-len": "off",
     "react/jsx-filename-extension": "off",
     "comma-dangle": "off",
-    "import/no-unresolved": "off"
+    "import/no-unresolved": "off",
+    "jsx-a11y/href-no-hash": [0],
+    "react-app/jsx-a11y/href-no-hash": "off"
   }
 }

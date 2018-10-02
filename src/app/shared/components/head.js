@@ -4,16 +4,15 @@ import Helmet from 'react-helmet';
 
 const mySitename = '';
 const SITE_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : mySitename;
-
 const FACEBOOK_APP_ID = 'XXXXXXXXX';
 
-const defaultTitle = 'My Website';
-const defaultDescription = 'This is a really awesome website where we can render on the server. Supa cool.';
+const defaultTitle = '';
+const defaultDescription = '';
 const defaultImage = `${SITE_URL}`;
 const defaultTwitter = '';
 const defaultSep = ' | ';
 
-class Layout extends Component {
+class Head extends Component {
   getMetaTags({ title, description, image, contentType, twitter, noCrawl, published, updated, category, tags }, pathname) {
     const theTitle = title ? (title + defaultSep + defaultTitle).substring(0, 60) : defaultTitle;
     const theDescription = description ? description.substring(0, 155) : defaultDescription;
@@ -63,26 +62,23 @@ class Layout extends Component {
     const { children, id, className, ...rest } = this.props;
 
     return (
-      <div id={id} className={className}>
-        <Helmet
-          htmlAttributes={{
-            lang: 'en',
-            itemscope: undefined,
-            itemtype: `http://schema.org/${rest.schema || 'WebPage'}`
-          }}
-          title={rest.title ? rest.title + defaultSep + defaultTitle : defaultTitle}
-          link={[
-            {
-              rel: 'canonical',
-              href: SITE_URL + this.props.location.pathname
-            }
-          ]}
-          meta={this.getMetaTags(rest, this.props.location.pathname)}
-        />
-        {children}
-      </div>
+      <Helmet
+        htmlAttributes={{
+          lang: 'en',
+          itemscope: undefined,
+          itemtype: `http://schema.org/${rest.schema || 'WebPage'}`
+        }}
+        title={rest.title ? rest.title + defaultSep + defaultTitle : defaultTitle}
+        link={[
+          {
+            rel: 'canonical',
+            href: SITE_URL + this.props.location.pathname
+          }
+        ]}
+        meta={this.getMetaTags(rest, this.props.location.pathname)}
+      />
     );
   }
 }
 
-export default withRouter(Layout);
+export default withRouter(Head);

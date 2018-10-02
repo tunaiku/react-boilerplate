@@ -6,8 +6,7 @@ import { Frontload } from 'react-frontload';
 import { ConnectedRouter } from 'connected-react-router';
 import createStore from './store';
 
-import App from './app/App';
-import './index.css';
+import App from './app';
 
 // Create a store and get back itself and its history object
 const { store, history } = createStore();
