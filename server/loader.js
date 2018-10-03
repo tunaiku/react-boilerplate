@@ -13,7 +13,7 @@ import Loadable from 'react-loadable';
 
 // Our store, entrypoint, and manifest
 import createStore from '../src/store';
-import App from '../src/app/App';
+import App from '../src/app';
 import manifest from '../build/asset-manifest.json';
 
 // LOADER
