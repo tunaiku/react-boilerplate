@@ -1,4 +1,3 @@
-import bodyParser from 'body-parser';
 import compression from 'compression';
 import express from 'express';
 import morgan from 'morgan';
@@ -15,8 +14,8 @@ const PORT = process.env.PORT || 3001;
 
 // Compress, parse, log, and raid the cookie jar
 app.use(compression());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(morgan('dev'));
 app.use(cookieParser());
 
