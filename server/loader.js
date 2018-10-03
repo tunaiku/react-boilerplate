@@ -18,23 +18,6 @@ import manifest from '../build/asset-manifest.json';
 
 // LOADER
 export default (req, res) => {
-  /*
-    A simple helper function to prepare the HTML markup. This loads:
-      - Page title
-      - SEO meta tags
-      - Preloaded state (for Redux) depending on the current route
-      - Code-split script tags depending on the current route
-  */
-  const injectHTML = (data, { html, title, meta, body, scripts, state }) => {
-    data = data.replace('<html>', `<html ${html}>`);
-    data = data.replace(/<title>.*?<\/title>/g, title);
-    data = data.replace('</head>', `${meta}</head>`);
-    data = data.replace('<div id="root"></div>', `<div id="root">${body}</div><script>window.__PRELOADED_STATE__ = ${state}</script>`);
-    data = data.replace('</body>', scripts.join('') + '</body>');
-
-    return data;
-  };
-
   // Load in our HTML file from our build
   fs.readFile(path.resolve(__dirname, '../build/index.html'), 'utf8', (err, htmlData) => {
     // If there's an error... serve up something nasty
@@ -96,15 +79,27 @@ export default (req, res) => {
             .map(k => assets[k]);
 
         // Let's format those assets into pretty <script> tags
-        const extraChunks = extractAssets(manifest, modules).map(c => `<script type="text/javascript" src="/${c}"></script>`);
+        const extraChunks = extractAssets(manifest, modules).map(c => `<script type="text/javascript" src="${c}"></script>`);
 
         // We need to tell Helmet to compute the right meta tags, title, and such
         const helmet = Helmet.renderStatic();
 
-        // NOTE: Disable if you desire
-        // Let's output the title, just to see SSR is working as intended
-        console.log('THE TITLE', helmet.title.toString());
+        /*
+         A simple helper function to prepare the HTML markup. This loads:
+         - Page title
+         - SEO meta tags
+         - Preloaded state (for Redux) depending on the current route
+         - Code-split script tags depending on the current route
+        */
+        const injectHTML = (data, { html, title, meta, body, scripts, state }) => {
+          data = data.replace('<html>', `<html ${html}>`);
+          data = data.replace(/<title>.*?<\/title>/g, title);
+          data = data.replace('</head>', `${meta}</head>`);
+          data = data.replace('<div id="root"></div>', `<div id="root">${body}</div><script>window.__PRELOADED_STATE__ = ${state}</script>`);
+          data = data.replace('</body>', scripts.join('') + '</body>');
 
+          return data;
+        };
         // Pass all this nonsense into our HTML formatting function above
         const html = injectHTML(htmlData, {
           html: helmet.htmlAttributes.toString(),
