@@ -1,9 +1,7 @@
 # Server-side rendering in Create React App
 
-## Goals
+## Feautures
 
-- **Zero modifications to your existing CRA application**
-- Create React App **without ejecting**
 - React Router v4 (with Thunk)
 - Full Custom SEO support via React Helmet
 - Preloaded page data via async/await and React Frontload
