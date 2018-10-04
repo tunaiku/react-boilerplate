@@ -10,10 +10,14 @@ const frontload = async props => await props.getMovies();
 class MoviesContainer extends Component {
   render() {
     const { movies } = this.props;
-    if (!movies.length) {
-      return <h1>loading data</h1>;
+    const { isFetching, isError, results } = movies;
+    if (isFetching) {
+      return <h1>Waiting for data..</h1>;
     }
-    return <Movies {...this.props} />;
+    if (isError) {
+      return <h1>Something wrong!!</h1>;
+    }
+    return <Movies movies={results} />;
   }
 }
 

@@ -2,11 +2,20 @@ import axios from 'axios';
 import { GET_MOVIES } from './movies.constant';
 
 export const getMovies = id => dispatch => {
-  return new Promise(async resolve => {
-    const response = await axios.get('https://api.tvmaze.com/search/shows?q=sex');
+  return new Promise(async (resolve, reject) => {
+    dispatch({ type: GET_MOVIES, isFetching: true });
 
-    dispatch({ type: GET_MOVIES, movies: response.data });
+    try {
+      const response = await axios.get('https://api.tvmaze.com/search/shows?q=sex');
+      dispatch({ type: GET_MOVIES, results: response.data, isFetching: false });
+      resolve(response.data);
+    } catch (err) {
+      reject({
+        results: err,
+        message: 'ERROR!!'
+      });
 
-    resolve(response.data);
+      dispatch({ type: GET_MOVIES, isError: true });
+    }
   });
 };
