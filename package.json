@@ -12,6 +12,7 @@
     "js-cookie": "^2.2.0",
     "md5-file": "^4.0.0",
     "morgan": "^1.9.0",
+    "node-sass": "^4.9.3",
     "prettier": "^1.13.4",
     "react": "^16.5.2",
     "react-apollo": "^2.2.3",
