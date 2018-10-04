@@ -12,8 +12,7 @@ import { Frontload, frontloadServerRender } from 'react-frontload';
 import Loadable from 'react-loadable';
 
 // Our store, entrypoint, and manifest
-import createStore from '../src/store';
-import App from '../src/app';
+import { App, AppStore } from '../src/app';
 import manifest from '../build/asset-manifest.json';
 
 // LOADER
@@ -28,7 +27,7 @@ export default (req, res) => {
     }
 
     // Create a store (with a memory history) from our current url
-    const { store } = createStore(req.url);
+    const { store } = AppStore(req.url);
 
     // If the user has a cookie (i.e. they're signed in) - set them as the current user
     // Otherwise, we want to set the current state to be logged out, just in case this isn't the default

@@ -6,7 +6,7 @@ const mySitename = '';
 const SITE_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : mySitename;
 const FACEBOOK_APP_ID = 'XXXXXXXXX';
 
-const defaultTitle = '';
+const defaultTitle = 'SSR React';
 const defaultDescription = '';
 const defaultImage = `${SITE_URL}`;
 const defaultTwitter = '';

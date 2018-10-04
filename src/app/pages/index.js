@@ -2,22 +2,37 @@ import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Loadable from 'react-loadable';
 
-const Homepage = Loadable({
-  loader: () => import(/* webpackChunkName: "homepage" */ './home'),
-  loading: () => null,
-  modules: ['homepage']
-});
+const routes = [
+  {
+    path: '/',
+    component: Loadable({
+      loader: () => import(/* webpackChunkName: "homepage" */ './home'),
+      loading: () => null
+    }),
+    exact: true
+  },
+  {
+    path: '/movies',
+    component: Loadable({
+      loader: () => import(/* webpackChunkName: "movie" */ './movies'),
+      loading: () => null
+    }),
+    exact: true
+  },
 
-const NotFound = Loadable({
-  loader: () => import(/* webpackChunkName: "homepage" */ './not-found'),
-  loading: () => null,
-  modules: ['not-found']
-});
+  {
+    path: '/404',
+    component: Loadable({
+      loader: () => import(/* webpackChunkName: "404" */ './not-found'),
+      loading: () => null
+    }),
+    exact: true
+  }
+];
 
 export default () => (
   <Switch>
-    <Route exact path="/" component={Homepage} />
-    <Route exact path="/404" component={NotFound} />
+    {routes.map(route => <Route key={route.path} {...route} />)}
     <Route render={() => <Redirect to="/404" />} />
   </Switch>
 );

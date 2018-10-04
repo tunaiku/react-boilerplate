@@ -3,7 +3,7 @@ import Head from '../../shared/components/head';
 
 export default () => (
   <div>
-    <Head id="home" />
-    <p>Here's our homepage. All are welcome.</p>
+    <Head id="home" title="Home" />
+    <h1>Welcome Buddies</h1>
   </div>
 );

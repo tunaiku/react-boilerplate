@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom';
 const links = [
   {
     to: '/',
-    text: 'Homepage'
+    text: 'Home'
   },
   {
-    to: '/404',
-    text: 'Broken Page'
+    to: '/movies',
+    text: 'Movies'
   }
 ];
 
@@ -20,7 +20,7 @@ const HeaderLink = ({ to, text, current }) => (
 
 export default ({ current }) => (
   <header id="header">
-    <h1 id="title">My awesome website</h1>
+    <h1 id="title">Cra SSR</h1>
     <ul id="links">{links.map((link, index) => <HeaderLink key={index} current={current} {...link} />)}</ul>
   </header>
 );
