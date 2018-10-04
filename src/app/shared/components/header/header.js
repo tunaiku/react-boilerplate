@@ -21,7 +21,6 @@ const HeaderLink = ({ to, text, current }) => (
 
 export default ({ current }) => (
   <header id="header">
-    <h1 className="title">Cra SSR</h1>
     <ul className="links">{links.map((link, index) => <HeaderLink key={index} current={current} {...link} />)}</ul>
   </header>
 );

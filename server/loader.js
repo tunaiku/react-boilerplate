@@ -16,7 +16,7 @@ import { App, AppStore } from '../src/app';
 import manifest from '../build/asset-manifest.json';
 
 // LOADER
-export default (req, res) => {
+module.exports = (req, res) => {
   // Load in our HTML file from our build
   fs.readFile(path.resolve(__dirname, '../build/index.html'), 'utf8', (err, htmlData) => {
     // If there's an error... serve up something nasty
