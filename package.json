@@ -40,7 +40,8 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "precommit": "lint-staged",
-    "serve": "NODE_ENV=production node ./server/index.js"
+    "serve": "NODE_ENV=production node ./server/index.js",
+    "analyze": "node analyze.js"
   },
   "devDependencies": {
     "@babel/polyfill": "^7.0.0",
