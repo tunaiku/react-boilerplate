@@ -34,12 +34,6 @@ export default (url = '/') => {
 
   let initialState = {};
 
-  // if (!isServer) {
-  //   console.log('get initial state from windws');
-  //   initialState = window.__PRELOADED_STATE__;
-  //   delete window.__PRELOADED_STATE__;
-  // }
-
   // Create the store
   const store = createStore(connectRouter(history)(appReducer), initialState, composedEnhancers);
 
