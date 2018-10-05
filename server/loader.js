@@ -94,7 +94,7 @@ module.exports = (req, res) => {
           data = data.replace('<html>', `<html ${html}>`);
           data = data.replace(/<title>.*?<\/title>/g, title);
           data = data.replace('</head>', `${meta}</head>`);
-          data = data.replace('<div id="root"></div>', `<div id="root">${body}</div><script>window.__PRELOADED_STATE__ = ${state}</script>`);
+          data = data.replace('<div id="root"></div>', `<div id="root">${body}</div>`);
           data = data.replace('</body>', scripts.join('') + '</body>');
 
           return data;
@@ -105,8 +105,7 @@ module.exports = (req, res) => {
           title: helmet.title.toString(),
           meta: helmet.meta.toString(),
           body: routeMarkup,
-          scripts: extraChunks,
-          state: JSON.stringify(store.getState()).replace(/</g, '\\u003c')
+          scripts: extraChunks
         });
 
         // We have all the final HTML, let's send it to the user already!

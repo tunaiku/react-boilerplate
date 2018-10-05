@@ -32,13 +32,13 @@ export default (url = '/') => {
     ...enhancers
   );
 
-  // Do we have preloaded state available? Great, save it.
-  const initialState = !isServer ? window.__PRELOADED_STATE__ : {};
+  let initialState = {};
 
-  // Delete it once we have it stored in a variable
-  if (!isServer) {
-    delete window.__PRELOADED_STATE__;
-  }
+  // if (!isServer) {
+  //   console.log('get initial state from windws');
+  //   initialState = window.__PRELOADED_STATE__;
+  //   delete window.__PRELOADED_STATE__;
+  // }
 
   // Create the store
   const store = createStore(connectRouter(history)(appReducer), initialState, composedEnhancers);
