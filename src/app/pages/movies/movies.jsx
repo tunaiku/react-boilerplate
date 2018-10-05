@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Movies = ({ movies }) => {
+const Movies = ({ movies, getMovies }) => {
   return (
     <section>
       {movies.map(movie => (
@@ -11,6 +11,8 @@ const Movies = ({ movies }) => {
           </li>
         </ul>
       ))}
+
+      <button onClick={() => getMovies('american')}>Change List</button>
     </section>
   );
 };

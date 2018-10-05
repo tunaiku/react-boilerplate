@@ -9,11 +9,13 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case GET_MOVIES:
+      const { results, isError, isFetching } = action;
+
       return {
         ...state,
-        results: action.results,
-        isFetching: action.isFetching,
-        isError: action.isError
+        results,
+        isFetching,
+        isError
       };
     default:
       return state;
