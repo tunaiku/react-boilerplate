@@ -5,7 +5,12 @@ import { frontloadConnect } from 'react-frontload';
 import { getMovies } from './movies.action';
 import Movies from './movies';
 
-const frontload = async props => await props.getMovies();
+const frontload = async props => {
+  if (!props.movies.results.length) {
+    console.log(props.movies.results.length);
+    await props.getMovies();
+  }
+};
 
 class MoviesContainer extends Component {
   render() {
@@ -31,7 +36,6 @@ export default withRouter(
     { getMovies }
   )(
     frontloadConnect(frontload, {
-      onMount: true,
       onUpdate: false
     })(MoviesContainer)
   )
