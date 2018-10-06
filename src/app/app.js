@@ -14,9 +14,8 @@ class App extends Component {
     return (
       <div id="app">
         <Header current={this.props.location.pathname} />
-        <div id="content">
-          <Routes />
-        </div>
+
+        <Routes />
       </div>
     );
   }
