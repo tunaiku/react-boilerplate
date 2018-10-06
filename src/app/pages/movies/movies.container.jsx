@@ -7,7 +7,6 @@ import Movies from './movies';
 
 const frontload = async props => {
   if (!props.movies.results.length) {
-    console.log(props.movies.results.length);
     await props.getMovies();
   }
 };

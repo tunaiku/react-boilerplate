@@ -6,16 +6,18 @@ const routes = [
   {
     path: '/',
     component: Loadable({
-      loader: () => import(/* webpackChunkName: "homepage" */ './home'),
-      loading: () => null
+      loader: () => import(/* webpackChunkName: "home" */ './home'),
+      loading: () => null,
+      modules: ['home']
     }),
     exact: true
   },
   {
     path: '/movies',
     component: Loadable({
-      loader: () => import(/* webpackChunkName: "movie" */ './movies'),
-      loading: () => null
+      loader: () => import(/* webpackChunkName: "movies" */ './movies'),
+      loading: () => null,
+      modules: ['movies']
     }),
     exact: true
   },
@@ -24,7 +26,8 @@ const routes = [
     path: '/404',
     component: Loadable({
       loader: () => import(/* webpackChunkName: "404" */ './not-found'),
-      loading: () => null
+      loading: () => null,
+      modules: ['404']
     }),
     exact: true
   }
@@ -32,7 +35,9 @@ const routes = [
 
 export default () => (
   <Switch>
-    {routes.map(route => <Route key={route.path} {...route} />)}
+    {routes.map(route => (
+      <Route key={route.path} {...route} />
+    ))}
     <Route render={() => <Redirect to="/404" />} />
   </Switch>
 );
