@@ -62,12 +62,11 @@ module.exports = (req, res) => {
       )
     ).then(routeMarkup => {
       if (context.url) {
-        // If context has a url property, then we need to handle a redirection in Redux Router
-        res.writeHead(302, {
-          Location: context.url
-        });
+        // context.url will contain the URL to redirect to if a <Redirect> / history.push was used
+        // If context has a url property, then we need to handle a redirection for react router and redux router
+        res.writeHead(302, { Location: context.url });
 
-        res.end();
+        // res.end();
       } else {
         // Otherwise, we carry on...
 
