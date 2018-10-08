@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { GET_MOVIES } from './movies.constant';
 
-export const getMovies = keyword => dispatch => {
+export const getMovies = keyword => (dispatch, getState) => {
   return new Promise(async (resolve, reject) => {
     dispatch({ type: GET_MOVIES, isFetching: true });
     try {

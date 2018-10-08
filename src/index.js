@@ -5,7 +5,8 @@ import Loadable from 'react-loadable';
 import { Frontload } from 'react-frontload';
 import { ConnectedRouter } from 'connected-react-router';
 
-import { App, AppStore } from './app';
+import App from './app';
+import AppStore from './app/redux/store';
 
 // Create a store and get back itself and its history object
 const { store, history } = AppStore();

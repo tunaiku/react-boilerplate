@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { frontloadConnect } from 'react-frontload';
-import { getMovies } from './movies.action';
 import Movies from './movies';
+import { getMovies } from '../../redux/movies/movies.action';
 
 const frontload = async props => {
-  if (!props.movies.results.length) {
+  if (props.movies.results && !props.movies.results.length) {
     await props.getMovies();
   }
 };
