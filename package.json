@@ -7,16 +7,13 @@
     "axios": "^0.18.0",
     "connected-react-router": "^4.5.0",
     "cookie-parser": "^1.4.3",
-    "eslint-plugin-import": "^2.14.0",
     "ignore-styles": "^5.0.1",
     "js-cookie": "^2.2.0",
     "md5-file": "^4.0.0",
     "morgan": "^1.9.1",
     "node-sass": "^4.9.3",
     "prettier": "^1.14.3",
-    "query-string": "^6.2.0",
     "react": "^16.5.2",
-    "react-apollo": "^2.2.3",
     "react-dom": "^16.5.2",
     "react-frontload": "^1.0.3",
     "react-helmet": "^5.2.0",
@@ -26,7 +23,6 @@
     "react-scripts": "^2.0.4",
     "redux": "^4.0.0",
     "redux-thunk": "^2.3.0",
-    "subscriptions-transport-ws": "^0.9.15",
     "webpack-bundle-analyzer": "^3.0.2"
   },
   "lint-staged": {
@@ -50,6 +46,7 @@
     "@babel/polyfill": "^7.0.0",
     "@babel/register": "^7.0.0",
     "babel-plugin-dynamic-import-node": "^2.1.0",
+    "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.1"
   },
   "browserslist": [
