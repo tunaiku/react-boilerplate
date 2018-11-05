@@ -5,6 +5,7 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
+    "cheerio": "^1.0.0-rc.2",
     "connected-react-router": "^4.5.0",
     "cookie-parser": "^1.4.3",
     "ignore-styles": "^5.0.1",
@@ -32,7 +33,7 @@
     ]
   },
   "scripts": {
-    "start": "react-scripts start",
+    "dev": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -46,6 +47,7 @@
     "@babel/polyfill": "^7.0.0",
     "@babel/register": "^7.0.0",
     "babel-plugin-dynamic-import-node": "^2.1.0",
+    "babel-plugin-module-resolver": "^3.1.1",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.1"
   },

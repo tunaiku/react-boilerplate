@@ -1,7 +1,8 @@
 import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Loadable from 'react-loadable';
-
+import Main from 'components/main';
+import Header from 'components/header';
 const routes = [
   {
     path: '/',
@@ -34,10 +35,15 @@ const routes = [
 ];
 
 export default () => (
-  <Switch>
-    {routes.map(route => (
-      <Route key={route.path} {...route} />
-    ))}
-    <Route render={() => <Redirect to="/404" />} />
-  </Switch>
+  <>
+    <Header />
+    <Main>
+      <Switch>
+        {routes.map(route => (
+          <Route key={route.path} {...route} />
+        ))}
+        <Route render={() => <Redirect to="/404" />} />
+      </Switch>
+    </Main>
+  </>
 );

@@ -7,14 +7,16 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import Helmet from 'react-helmet';
 import { Provider } from 'react-redux';
-import { StaticRouter } from 'react-router';
+import StaticRouter from 'react-router-dom/StaticRouter';
 import { Frontload, frontloadServerRender } from 'react-frontload';
 import Loadable from 'react-loadable';
+import cheerio from 'cheerio';
 
 // Our store, entrypoint, and manifest
-import App from '../src/app';
-import AppStore from '../src/app/redux/store';
-import manifest from '../build/asset-manifest.json';
+import Routes from 'routes';
+import AppStore from 'app.store';
+
+// import manifest from '../../build/asset-manifest.json';
 
 // LOADER
 module.exports = (req, res) => {
@@ -29,9 +31,7 @@ module.exports = (req, res) => {
 
     // Create a store (with a memory history) from our current url
     const { store } = AppStore(req.url);
-
-    // If the user has a cookie (i.e. they're signed in) - set them as the current user
-    // Otherwise, we want to set the current state to be logged out, just in case this isn't the default
+    // set device type to tell our header component what initial header type should render
 
     const context = {};
     const modules = [];
@@ -54,8 +54,8 @@ module.exports = (req, res) => {
         <Loadable.Capture report={m => modules.push(m)}>
           <Provider store={store}>
             <StaticRouter location={req.url} context={context}>
-              <Frontload>
-                <App />
+              <Frontload isServer={true} deviceType="mobile">
+                <Routes />
               </Frontload>
             </StaticRouter>
           </Provider>
@@ -63,24 +63,32 @@ module.exports = (req, res) => {
       )
     ).then(routeMarkup => {
       if (context.url) {
-        // context.url will contain the URL to redirect to if a <Redirect> / history.push was used
-        // If context has a url property, then we need to handle a redirection for react router and redux router
-        res.writeHead(302, { Location: context.url });
-
-        // res.end();
+        // context.url will contain a redirect URL to redirect  when a <Redirect> component from react router was used
+        // then we need to handle a redirection
+        const location = { Location: context.url };
+        switch (context.url) {
+          case '/server-error':
+            res.writeHead(307, location);
+            res.end();
+            break;
+          default:
+            res.writeHead(301, location);
+            res.end();
+        }
       } else {
         // Otherwise, we carry on...
 
-        // Let's give ourself a function to load all our page-specific JS assets for code splitting
-        const extractAssets = (assets, chunks) =>
-          Object.keys(assets)
-            .filter(asset => chunks.indexOf(asset.replace('.js', '')) > -1)
-            .map(k => assets[k]);
-
-        // Let's format those assets into pretty <script> tags
-        const extraChunks = extractAssets(manifest, modules).map(c => `<script type="text/javascript" src="/${c.replace(/^\//, '')}"></script>`);
         // We need to tell Helmet to compute the right meta tags, title, and such
         const helmet = Helmet.renderStatic();
+
+        // function to load all page-specific assets in code splitting
+        // const extractAssets = (assets, chunks, assetType) =>
+        //   Object.keys(assets)
+        //     .filter(asset => chunks.indexOf(asset.replace('.' + assetType, '')) > -1)
+        //     .map(k => assets[k]);
+
+        // get the css chunks according the page url, wee need to render inline the extra chunks to prevent blinked page when init the page
+        // const cssExtraChunksLink = extractAssets(manifest, modules, 'css');
 
         /*
          A simple helper function to prepare the HTML markup. This loads:
@@ -89,12 +97,28 @@ module.exports = (req, res) => {
          - Preloaded state (for Redux) depending on the current route
          - Code-split script tags depending on the current route
         */
-        const injectHTML = (data, { html, title, meta, body, scripts, state }) => {
+        const injectHTML = (data, { html, title, meta, body, state }) => {
+          // load html with cheerio
+          const $ = cheerio.load(data);
+          let cssLinks = [];
+          let cssInline = [];
+
+          // get main style href link
+          $('link[rel="stylesheet"]').map((i, elem) => cssLinks.push(elem.attribs.href));
+          $('link[rel="stylesheet"]').remove();
+
+          cssLinks.forEach(link =>
+            cssInline.push(fs.readFileSync(path.resolve(__dirname, '../build') + link, 'utf8'))
+          );
+
+          data = $.html();
           data = data.replace('<html>', `<html ${html}>`);
           data = data.replace(/<title>.*?<\/title>/g, title);
-          data = data.replace('</head>', `${meta}</head>`);
-          data = data.replace('<div id="root"></div>', `<div id="root">${body}</div><script>window.__PRELOADED_STATE__ = ${state}</script>`);
-          data = data.replace('</body>', scripts.join('') + '</body>');
+          data = data.replace('</head>', `${meta}<style>${cssInline.join('')}</style></head>`);
+          data = data.replace(
+            '<div id="root"></div>',
+            `<div id="root">${body}</div><script>window.__PRELOADED_STATE__ = ${state}</script>`
+          );
 
           return data;
         };
@@ -104,7 +128,7 @@ module.exports = (req, res) => {
           title: helmet.title.toString(),
           meta: helmet.meta.toString(),
           body: routeMarkup,
-          scripts: extraChunks,
+          // extraCss: cssExtraChunksLink,
           state: JSON.stringify(store.getState()).replace(/</g, '\\u003c')
         });
 
