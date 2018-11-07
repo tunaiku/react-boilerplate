@@ -1,16 +1,30 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
 import './header.sass';
+import { Container } from 'components/grid';
 
-export default ({ current }) => (
-  <header id="header">
-    <ul className="links">
-      <li>
-        <Link to="/">Home</Link>
-      </li>
-      <li>
-        <Link to="/movies">Movies</Link>
-      </li>
-    </ul>
-  </header>
-);
+export default memo(({ current }) => {
+  const links = [{ name: 'Home', url: '/' }, { name: 'Movies', url: '/movies' }];
+
+  const LinkItems = links.map(link => (
+    <li className="nav__item">
+      <Link className="nav__link" to={link.url}>
+        {link.name}
+      </Link>
+    </li>
+  ));
+
+  return (
+    <header id="header">
+      <div className="navbar navbar--secondary">
+        <Container>
+          <div className="navbar__block navbar__block--end">
+            <nav className="nav">
+              <div class="nav__list">{LinkItems}</div>
+            </nav>
+          </div>
+        </Container>
+      </div>
+    </header>
+  );
+});

@@ -1,4 +1,7 @@
 import React from 'react';
+import Movie from './movie';
+import { Row } from 'components/grid';
+import { Column } from '../../components/grid/index';
 
 const Movies = ({ moviesResults, isError, isFetching, isFetched }) => {
   if (isFetching) {
@@ -9,15 +12,16 @@ const Movies = ({ moviesResults, isError, isFetching, isFetched }) => {
   }
 
   const movies = moviesResults.map(movie => (
-    <ul key={movie.show.name}>
-      <h2>{movie.show.name}</h2>
-      <li style={{ listStyleType: 'none' }}>
-        <span>type : {movie.show.type}</span>
-      </li>
-    </ul>
+    <Column xs="12" lg="4">
+      <Movie key={movie.score} movie={movie} />
+    </Column>
   ));
 
-  return <section>{movies}</section>;
+  return (
+    <section className="container">
+      <Row>{movies}</Row>
+    </section>
+  );
 };
 
 export default Movies;
