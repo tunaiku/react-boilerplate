@@ -7,7 +7,7 @@ export default memo(({ current }) => {
   const links = [{ name: 'Home', url: '/' }, { name: 'Movies', url: '/movies' }];
 
   const LinkItems = links.map(link => (
-    <li className="nav__item">
+    <li key={link.name} className="nav__item">
       <Link className="nav__link" to={link.url}>
         {link.name}
       </Link>
@@ -20,7 +20,7 @@ export default memo(({ current }) => {
         <Container>
           <div className="navbar__block navbar__block--end">
             <nav className="nav">
-              <div class="nav__list">{LinkItems}</div>
+              <div className="nav__list">{LinkItems}</div>
             </nav>
           </div>
         </Container>

@@ -12,7 +12,7 @@ const Movies = ({ moviesResults, isError, isFetching, isFetched }) => {
   }
 
   const movies = moviesResults.map(movie => (
-    <Column xs="12" lg="4">
+    <Column xs="12" lg="4" key={movie.score}>
       <Movie key={movie.score} movie={movie} />
     </Column>
   ));

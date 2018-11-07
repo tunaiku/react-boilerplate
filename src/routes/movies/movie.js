@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 
 export default memo(function Movie({ movie }) {
   return (
-    <div class="pd-small">
+    <div className="pd-small">
       <div className="card">
         <div className="card__image">
           <img src={movie.show.image && movie.show.image.original} alt="" />>
