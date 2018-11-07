@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { memo } from 'react';
 import { connect } from 'react-redux';
 import { frontloadConnect } from 'react-frontload';
 import Movies from './movies';
@@ -17,11 +17,8 @@ const frontload = async props => {
   }
 };
 
-class MoviesContainer extends Component {
-  render() {
-    return <Movies {...this.props} />;
-  }
-}
+const MoviesContainer = memo((props) => <Movies {...props} />)
+
 
 const mapStateToProps = state => ({
   moviesResults: getMoviesResults(state),
