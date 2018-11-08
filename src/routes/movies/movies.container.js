@@ -10,16 +10,6 @@ import {
   isErrorMovies
 } from 'services/reducers/movies.reducer';
 
-const frontload = async props => {
-  const { isFetched, isError } = props;
-  if (!isFetched && !isError) {
-    return await props.fetchMoviesAction({ keyword: 'avenger' });
-  }
-};
-
-const MoviesContainer = memo((props) => <Movies {...props} />)
-
-
 const mapStateToProps = state => ({
   moviesResults: getMoviesResults(state),
   isFetched: isFetchedMovies(state),
@@ -27,13 +17,22 @@ const mapStateToProps = state => ({
   isError: isErrorMovies(state)
 });
 
-const mapDispatchToProps = {
+const mapActionsToProps = {
   fetchMoviesAction
 };
 
+const frontload = async props => {
+  const { isFetched, isError } = props;
+  if (!isFetched && !isError) {
+    return await props.fetchMoviesAction({ keyword: 'avenger' });
+  }
+};
+
+const MoviesContainer = memo(props => <Movies {...props} />);
+
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapActionsToProps
 )(
   frontloadConnect(frontload, {
     onUpdate: false
