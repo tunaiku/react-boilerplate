@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
 import './header.sass';
-import { Container } from 'components/grid';
+import { Container } from 'shared/components/grid';
 
 export default memo(({ current }) => {
   const links = [{ name: 'Home', url: '/' }, { name: 'Movies', url: '/movies' }];

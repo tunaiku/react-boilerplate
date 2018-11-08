@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import Head from 'components/head';
+import Head from 'shared/components/head';
 
 export default () => (
   <Fragment>

@@ -1,9 +1,10 @@
 import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Loadable from 'react-loadable';
-import Main from 'components/main';
-import Header from 'components/header';
-const routes = [
+import Main from 'shared/components/main';
+import Header from 'shared/components/header';
+
+const pages = [
   {
     path: '/',
     component: Loadable({
@@ -39,7 +40,7 @@ export default () => (
     <Header />
     <Main>
       <Switch>
-        {routes.map(route => (
+        {pages.map(route => (
           <Route key={route.path} {...route} />
         ))}
         <Route render={() => <Redirect to="/404" />} />

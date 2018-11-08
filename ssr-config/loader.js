@@ -13,7 +13,7 @@ import Loadable from 'react-loadable';
 import cheerio from 'cheerio';
 
 // Our store, entrypoint, and manifest
-import Routes from 'routes';
+import Pages from 'pages';
 import AppStore from 'app.store';
 
 // import manifest from '../../build/asset-manifest.json';
@@ -55,7 +55,7 @@ module.exports = (req, res) => {
           <Provider store={store}>
             <StaticRouter location={req.url} context={context}>
               <Frontload isServer={true} deviceType="mobile">
-                <Routes />
+                <Pages />
               </Frontload>
             </StaticRouter>
           </Provider>

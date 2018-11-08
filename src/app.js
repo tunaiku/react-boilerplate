@@ -3,7 +3,7 @@ import { render, hydrate } from 'react-dom';
 import Loadable from 'react-loadable';
 
 // Action creators and helpers
-import Routes from 'routes';
+import Pages from 'pages';
 import AppStore from 'app.store';
 import { Provider } from 'react-redux';
 import { Frontload } from 'react-frontload';
@@ -19,7 +19,7 @@ class App extends PureComponent {
       <Provider store={store}>
         <ConnectedRouter history={history}>
           <Frontload noServerRender={true}>
-            <Routes />
+            <Pages />
           </Frontload>
         </ConnectedRouter>
       </Provider>

@@ -1,7 +1,6 @@
 import React from 'react';
 import Movie from './movie';
-import { Row } from 'components/grid';
-import { Column } from '../../components/grid/index';
+import { Row, Column } from 'shared/components/grid';
 
 const Movies = ({ moviesResults, isError, isFetching, isFetched }) => {
   if (isFetching) {

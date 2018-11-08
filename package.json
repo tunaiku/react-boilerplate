@@ -40,7 +40,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "precommit": "lint-staged",
-    "serve": "NODE_ENV=production node ./server/index.js",
+    "serve": "NODE_ENV=production node ./ssr-config/index.js",
     "analyze": "node analyze.js"
   },
   "devDependencies": {

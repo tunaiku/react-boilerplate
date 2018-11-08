@@ -1,14 +1,14 @@
 import React, { memo } from 'react';
 import { connect } from 'react-redux';
 import { frontloadConnect } from 'react-frontload';
-import Movies from './movies';
-import { fetchMoviesAction } from 'services/actions/movies.action';
+import Movies from './movie-list';
+import { fetchMoviesAction } from './services/movies.action';
 import {
   getMoviesResults,
   isFetchedMovies,
   isFetchingMovies,
   isErrorMovies
-} from 'services/reducers/movies.reducer';
+} from './services/movies.reducer';
 
 const mapStateToProps = state => ({
   moviesResults: getMoviesResults(state),

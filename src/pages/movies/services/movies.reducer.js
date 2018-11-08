@@ -1,5 +1,5 @@
-import fetchReducer from './fetch.reducer';
-import { MOVIES } from 'services/constants/movies.constant';
+import fetchReducer from 'shared/services/reducers/fetch.reducer';
+import { MOVIES } from './movies.constant';
 
 // new articles selectors
 export const getMoviesResults = state => state.movies.results;
