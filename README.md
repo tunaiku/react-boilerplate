@@ -1,4 +1,4 @@
-# Server-side rendering in Create React App
+# React Boilerplate using Create React App and Server Side Rendering Configuration
 
 ## Feautures
 
