@@ -9,7 +9,7 @@ import { Provider } from 'react-redux';
 import { Frontload } from 'react-frontload';
 import { ConnectedRouter } from 'connected-react-router';
 
-import 'app.sass';
+import 'app.scss';
 
 const { store, history } = AppStore();
 
