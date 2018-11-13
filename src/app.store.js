@@ -3,7 +3,7 @@ import { connectRouter, routerMiddleware } from 'connected-react-router';
 import thunk from 'redux-thunk';
 import { createBrowserHistory, createMemoryHistory } from 'history';
 import appReducer from 'app.reducer';
-import isServer from 'shared/services/utils/isServer.util.js';
+import isServer from 'shared/utils/isServer.util.js';
 
 export default (url = '/') => {
   // Create a history depending on the environment

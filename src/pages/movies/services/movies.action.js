@@ -2,8 +2,8 @@
 import { FETCH_MOVIES_START, FETCH_MOVIES_FAILURE, FETCH_MOVIES_SUCCESS } from './movies.constant';
 
 // import utils
-import { fetchThunkCompose } from 'shared/services/actions/fetch.action';
-import { fetchMovies } from 'shared/services/utils/fetchApiData.util';
+import { fetchThunkCompose } from 'shared/services/fetch/fetch.action';
+import { fetchMovies } from 'shared/utils/fetchApiData.util';
 
 const moviesActionTypes = {
   fetchStart: FETCH_MOVIES_START,

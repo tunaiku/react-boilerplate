@@ -1,4 +1,4 @@
-import fetchReducer from 'shared/services/reducers/fetch.reducer';
+import fetchReducer from 'shared/services/fetch/fetch.reducer';
 import { MOVIES } from './movies.constant';
 
 // new articles selectors
