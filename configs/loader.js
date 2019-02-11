@@ -16,7 +16,7 @@ import cheerio from 'cheerio';
 import Pages from 'pages';
 import AppStore from 'app.store';
 
-// import manifest from '../../build/asset-manifest.json';
+// import manifest from '../build/asset-manifest.json';
 
 // LOADER
 module.exports = (req, res) => {
@@ -81,15 +81,6 @@ module.exports = (req, res) => {
         // We need to tell Helmet to compute the right meta tags, title, and such
         const helmet = Helmet.renderStatic();
 
-        // function to load all page-specific assets in code splitting
-        // const extractAssets = (assets, chunks, assetType) =>
-        //   Object.keys(assets)
-        //     .filter(asset => chunks.indexOf(asset.replace('.' + assetType, '')) > -1)
-        //     .map(k => assets[k]);
-
-        // get the css chunks according the page url, wee need to render inline the extra chunks to prevent blinked page when init the page
-        // const cssExtraChunksLink = extractAssets(manifest, modules, 'css');
-
         /*
          A simple helper function to prepare the HTML markup. This loads:
          - Page title
@@ -100,21 +91,22 @@ module.exports = (req, res) => {
         const injectHTML = (data, { html, title, meta, body, state }) => {
           // load html with cheerio
           const $ = cheerio.load(data);
-          let cssLinks = [];
-          let cssInline = [];
+          let cssFilePath = [];
+          let cssString = [];
 
           // get main style href link
-          $('link[rel="stylesheet"]').map((i, elem) => cssLinks.push(elem.attribs.href));
-          $('link[rel="stylesheet"]').remove();
+          $('link[rel="stylesheet"]').map((i, elem) => cssFilePath.push(elem.attribs.href));
+          $('link[rel="stylesheet"]').remove(); // remove css in head element
 
-          cssLinks.forEach(link =>
-            cssInline.push(fs.readFileSync(path.resolve(__dirname, '../build') + link, 'utf8'))
+          // get string of our css files and s
+         cssFilePath.forEach(link =>
+            cssString.push(fs.readFileSync(path.resolve(__dirname, '../build') + link, 'utf8'))
           );
 
           data = $.html();
           data = data.replace('<html>', `<html ${html}>`);
           data = data.replace(/<title>.*?<\/title>/g, title);
-          data = data.replace('</head>', `${meta}<style>${cssInline.join('')}</style></head>`);
+          data = data.replace('</head>', `${meta}<style>${cssString.join('')}</style></head>`);
           data = data.replace(
             '<div id="root"></div>',
             `<div id="root">${body}</div><script>window.__PRELOADED_STATE__ = ${state}</script>`
@@ -128,7 +120,7 @@ module.exports = (req, res) => {
           title: helmet.title.toString(),
           meta: helmet.meta.toString(),
           body: routeMarkup,
-          // extraCss: cssExtraChunksLink,
+          // extraScripts: jsExtraChunksLink,
           state: JSON.stringify(store.getState()).replace(/</g, '\\u003c')
         });
 
