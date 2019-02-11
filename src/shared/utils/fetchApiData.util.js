@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { apiEndpoints } from 'environments/env';
+import env from 'environments/env';
 /**
  * base wp api endpoint url (most used url) to get article and category list
  * @returns object
@@ -11,5 +11,5 @@ export function fetchMovies({ keyword }) {
 
   if (keyword) options.q = keyword;
 
-  return axios({ url: apiEndpoints.movies, method: 'get', params: options });
+  return axios({ url: env.apiEndpoints.movies, method: 'get', params: options });
 }
