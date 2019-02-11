@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Loadable from 'react-loadable';
-import Main from 'shared/components/main';
+import Body from 'shared/components/body';
 import Header from 'shared/components/header';
 
 const pages = [
@@ -38,13 +38,13 @@ const pages = [
 export default () => (
   <>
     <Header />
-    <Main>
+    <Body>
       <Switch>
         {pages.map(route => (
           <Route key={route.path} {...route} />
         ))}
         <Route render={() => <Redirect to="/404" />} />
       </Switch>
-    </Main>
+    </Body>
   </>
 );
