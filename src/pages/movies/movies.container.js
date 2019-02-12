@@ -1,4 +1,3 @@
-import React, { memo } from 'react';
 import { connect } from 'react-redux';
 import { frontloadConnect } from 'react-frontload';
 import Movies from './movie-list';
@@ -28,13 +27,11 @@ const frontload = async props => {
   }
 };
 
-const MoviesContainer = memo(props => <Movies {...props} />);
-
 export default connect(
   mapStateToProps,
   mapActionsToProps
 )(
   frontloadConnect(frontload, {
     onUpdate: false
-  })(MoviesContainer)
+  })(Movies)
 );
