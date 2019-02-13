@@ -3,13 +3,14 @@ import { FETCH_MOVIES_START, FETCH_MOVIES_FAILURE, FETCH_MOVIES_SUCCESS } from '
 
 // import utils
 import { fetchThunkCompose } from 'shared/services/fetch/fetch.action';
-import { fetchMovies } from 'shared/utils/fetchApiData.util';
+import { fetchMovies } from './movies-api';
+import { generateFetchActionTypes } from 'shared/services/fetch/fetch.action';
 
-const moviesActionTypes = {
+export const moviesActionTypes = generateFetchActionTypes({
   fetchStart: FETCH_MOVIES_START,
   fetchSuccess: FETCH_MOVIES_SUCCESS,
   fetchFailure: FETCH_MOVIES_FAILURE
-};
+});
 
 // prettier-ignore
 export const fetchMoviesAction = (options) => fetchThunkCompose(fetchMovies(options), moviesActionTypes);

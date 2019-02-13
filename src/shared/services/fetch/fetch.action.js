@@ -1,3 +1,5 @@
+import { FETCH_START, FETCH_SUCCESS, FETCH_FAILURE } from './fetch.constant';
+
 export function fetchStart(actionType) {
   return {
     type: actionType,
@@ -25,6 +27,19 @@ export function fetchSuccess(actionType, results) {
 }
 
 /**
+ * generate action types for fething actions creators
+ * @param {*} { fetchStart, fetchFailure, fetchSuccess }
+ * @returns
+ */
+export const generateFetchActionTypes = ({ fetchStart, fetchFailure, fetchSuccess }) => {
+  return {
+    [FETCH_START]: fetchStart,
+    [FETCH_FAILURE]: fetchFailure,
+    [FETCH_SUCCESS]: fetchSuccess
+  };
+};
+
+/**
  * fetch thunk function for fetching articles
  * @param {object} response the promises from api request
  * @param {object} actionTypes action types for specific action. that the action  who used this fetch thunk action
@@ -34,7 +49,7 @@ export function fetchSuccess(actionType, results) {
 export function fetchThunkCompose(response, actionTypes, isUseServerErrorHandle = true) {
   return async (dispatch, getState) => {
     // prettier-ignore
-    dispatch(fetchStart(actionTypes.fetchStart));
+    dispatch(fetchStart(actionTypes[FETCH_START]));
 
     try {
       let results = [];
@@ -48,9 +63,9 @@ export function fetchThunkCompose(response, actionTypes, isUseServerErrorHandle 
       }
 
       // prettier-ignore
-      dispatch(fetchSuccess(actionTypes.fetchSuccess, results));
+      dispatch(fetchSuccess(actionTypes[FETCH_SUCCESS], results));
     } catch (err) {
-      dispatch(fetchFailure(actionTypes.fetchFailure));
+      dispatch(fetchFailure(actionTypes[FETCH_FAILURE]));
     }
   };
 }

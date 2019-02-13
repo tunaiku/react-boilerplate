@@ -1,8 +1,22 @@
-const defaultInitialState = {
+import { FETCH_START, FETCH_FAILURE, FETCH_SUCCESS } from './fetch.constant';
+
+const initialState = {
   results: [],
   isFetching: false,
   isError: false,
   isFetched: false
+};
+
+/**
+ * get fetch action type (FETCH_START/FETCH_FAILURE/FETCH_SUCCESS) according to action type from executed dispatch function.
+ * @param {object} actionType = action types from dispatched function
+ * @returns
+ */
+const getReducerActionType = (actionTypes, actionType) => {
+  return Object.entries(actionTypes).reduce((result, action) => {
+    const [key, value] = action;
+    return value === actionType ? key : '';
+  });
 };
 
 /**
@@ -12,20 +26,22 @@ const defaultInitialState = {
  * @returns
  */
 
-export default function fetchReducer(ACTION_CONTEXT, initialState = defaultInitialState) {
+export default function fetchReducer(actionTypes) {
   return function(state = initialState, action) {
-    switch (action.type) {
-      case `FETCH_${ACTION_CONTEXT}_START`:
+    const dispatchedActionType = getReducerActionType(actionTypes, action.type);
+
+    switch (dispatchedActionType) {
+      case FETCH_START:
         return {
           ...state,
           isFetching: action.isFetching,
           isFetched: action.isFetched,
           isError: action.isError
         };
-      case `FETCH_${ACTION_CONTEXT}_FAILURE`:
+      case FETCH_FAILURE:
         return { ...state, isError: action.isError, isFetching: action.isFetching };
 
-      case `FETCH_${ACTION_CONTEXT}_SUCCESS`:
+      case FETCH_SUCCESS:
         return {
           ...state,
           isFetched: action.isFetched,
