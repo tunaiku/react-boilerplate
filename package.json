@@ -13,6 +13,7 @@
     "ignore-styles": "^5.0.1",
     "js-cookie": "^2.2.0",
     "md5-file": "^4.0.0",
+    "mobile-detect": "^1.4.3",
     "morgan": "^1.9.1",
     "node-sass": "^4.9.3",
     "prettier": "^1.14.3",
