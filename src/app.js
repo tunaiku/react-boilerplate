@@ -12,9 +12,7 @@ const root = document.querySelector('#root');
 const App = () => (
   <BrowserRouter>
     <Frontload noServerRender={true}>
-      <div>
-        <Main />
-      </div>
+      <Main />
     </Frontload>
   </BrowserRouter>
 );
