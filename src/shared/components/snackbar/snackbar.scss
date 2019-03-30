@@ -1,0 +1,29 @@
+@import 'node_modules/formare/scss/abstracts/all';
+
+.Snackbar {
+  position: fixed;
+  transition: all 250ms ease-out;
+  top: spacing(base);
+  left: spacing(base);
+  right: spacing(base);
+  transform: translateY(-150%);
+  border-radius: border-radius(large);
+  background-color: rgba($dark, 0.95);
+  color: color-yiq($dark);
+  // opacity: 0;
+  padding: spacing(base);
+
+  @include media(sm) {
+    max-width: 480px;
+  }
+
+  &.is-opening {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  &.is-hiding {
+    // opacity: 0;
+    transform: translateY(-150%);
+  }
+}

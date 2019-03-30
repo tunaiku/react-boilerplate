@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import Head from 'shared/components/head';
 
-export default () => (
+const NotFound = () => (
   <Fragment>
     <Head id="not-found" title="Not Found" noCrawl />
     <h1>Page Not Found</h1>
@@ -12,3 +12,5 @@ export default () => (
     </p>
   </Fragment>
 );
+
+export default NotFound;

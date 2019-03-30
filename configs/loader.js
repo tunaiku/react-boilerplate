@@ -54,7 +54,7 @@ module.exports = (req, res) => {
         <Loadable.Capture report={m => modules.push(m)}>
           <Provider store={store}>
             <StaticRouter location={req.url} context={context}>
-              <Frontload isServer={true} deviceType="mobile">
+              <Frontload isServer={true}>
                 <Pages />
               </Frontload>
             </StaticRouter>
@@ -99,7 +99,7 @@ module.exports = (req, res) => {
           $('link[rel="stylesheet"]').remove(); // remove css in head element
 
           // get string of our css files and s
-         cssFilePath.forEach(link =>
+          cssFilePath.forEach(link =>
             cssString.push(fs.readFileSync(path.resolve(__dirname, '../build') + link, 'utf8'))
           );
 

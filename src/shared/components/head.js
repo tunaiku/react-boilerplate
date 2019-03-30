@@ -6,14 +6,28 @@ const mySitename = '';
 const SITE_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : mySitename;
 const FACEBOOK_APP_ID = 'XXXXXXXXX';
 
-const defaultTitle = 'SSR React';
+const defaultTitle = 'Senyumku';
 const defaultDescription = '';
 const defaultImage = `${SITE_URL}`;
 const defaultTwitter = '';
 const defaultSep = ' | ';
 
 class Head extends Component {
-  getMetaTags({ title, description, image, contentType, twitter, noCrawl, published, updated, category, tags }, pathname) {
+  getMetaTags(
+    {
+      title,
+      description,
+      image,
+      contentType,
+      twitter,
+      noCrawl,
+      published,
+      updated,
+      category,
+      tags
+    },
+    pathname
+  ) {
     const theTitle = title ? (title + defaultSep + defaultTitle).substring(0, 60) : defaultTitle;
     const theDescription = description ? description.substring(0, 155) : defaultDescription;
     const theImage = image ? `${SITE_URL}${image}` : defaultImage;

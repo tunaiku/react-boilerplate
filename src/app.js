@@ -1,35 +1,25 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { render, hydrate } from 'react-dom';
 import Loadable from 'react-loadable';
-
-// Action creators and helpers
-import Pages from 'pages';
-import AppStore from 'app.store';
-import { Provider } from 'react-redux';
+import Main from 'pages';
 import { Frontload } from 'react-frontload';
-import { ConnectedRouter } from 'connected-react-router';
+import { BrowserRouter } from 'react-router-dom';
 
 import 'app.scss';
 
-const { store, history } = AppStore();
-
-class App extends PureComponent {
-  render() {
-    return (
-      <Provider store={store}>
-        <ConnectedRouter history={history}>
-          <Frontload noServerRender={true}>
-            <Pages />
-          </Frontload>
-        </ConnectedRouter>
-      </Provider>
-    );
-  }
-}
-
 const root = document.querySelector('#root');
 
-export default (function() {
+const App = () => (
+  <BrowserRouter>
+    <Frontload noServerRender={true}>
+      <div>
+        <Main />
+      </div>
+    </Frontload>
+  </BrowserRouter>
+);
+
+export default (() => {
   if (root.hasChildNodes() === true) {
     // If it's an SSR, use hydrate to get fast page loads by just
     // attaching event listeners after the initial render
