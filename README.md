@@ -126,7 +126,7 @@ Example small refactor and improvement in our example folder:
 - **File name** [Kebab Case] example: `other-example.js`
 - **Function name** [Camel Case] example: `const exampleFunction = () => {....}`
 - **Component Name** [Pascal Case] example: `const ExampleComponent = () => {...}`
-- **Constant Variable Name** [Snake Case] example: `const EXAMPLE_CONTANT = 'example'`
+- **Constant Variable Name** [Snake Case] example: `const EXAMPLE_CONSTANT = 'example'`
 
 **Note**
 
@@ -231,12 +231,6 @@ If you want to import file from other nested folder, and you import it using rel
       ├── src/
           ├── pages/
               ├── example/
-                  ├── modules
-                      ├── components
-                          ├── example-header
-                              ├── example-header.scss
-                              ├── example-header.js
-                              ├── index.js
                   ├── example.js
                   ├── example.scss
           ├── shared/
@@ -244,17 +238,18 @@ If you want to import file from other nested folder, and you import it using rel
                   ├── header
                       ├── header.scss
                       ├── header.js
+                      ├── index.js
 
 ```javascript
 // example-header.js
-import SharedComponent from '../../../../shared/components/header';
+import Header from '../../../../shared/components/header';
 ```
 
 you should use absolute import;
 
 ```javascript
 // example-header.js
-import SharedComponent from 'shared/components/header'; // import header js from src/shared/components/header.js
+import Header from 'shared/components/header'; // import header js from src/shared/components/header.js
 ```
 
 #### • Hooks Creation
