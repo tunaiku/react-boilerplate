@@ -146,7 +146,7 @@ Using arrow function to declare component.
 ```javascript
 import react from 'react';
 
-const ExampleComponent = () => return <h1>Example Component</h1>;
+const ExampleComponent = () => <h1>Example Component</h1>;
 
 export default ExampleComponent;
 ```
@@ -156,7 +156,7 @@ For some case you want to use memo from react to prevent unnecessary rerender.
 ```javascript
 import react, {memo} from 'react';
 
-const ExampleComponent = memo() => return <h1>Example Component</h1>;
+const ExampleComponent = memo() => <h1>Example Component</h1>;
 
 Example.displayName = 'ExampleComponent';
 
