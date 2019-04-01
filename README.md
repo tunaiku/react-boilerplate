@@ -125,7 +125,7 @@ Example small refactor and improvement in our example folder:
 
 - **File name** [Kebab Case] example: `other-example.js`
 - **Function name** [Camel Case] example: `const exampleFunction = () => {....}`
-- **Component Name** [Pascal Case] example: `const ExampleComponent = () => {...}`
+- **Component Name** [Pascal Case] example: `const Example = () => {...}`
 - **Constant Variable Name** [Snake Case] example: `const EXAMPLE_CONSTANT = 'example'`
 
 **Note**
@@ -146,9 +146,9 @@ Using arrow function to declare component.
 ```javascript
 import react from 'react';
 
-const ExampleComponent = () => <h1>Example Component</h1>;
+const Example = () => <h1>Example Component</h1>;
 
-export default ExampleComponent;
+export default Example;
 ```
 
 For some case you want to use memo from react to prevent unnecessary rerender.
@@ -156,11 +156,11 @@ For some case you want to use memo from react to prevent unnecessary rerender.
 ```javascript
 import react, {memo} from 'react';
 
-const ExampleComponent = memo() => <h1>Example Component</h1>;
+const Example = memo() => <h1>Example Component</h1>;
 
-Example.displayName = 'ExampleComponent';
+Example.displayName = 'Example';
 
-export default ExampleComponent;
+export default Example;
 ```
 
 #### • Add Style
@@ -175,9 +175,9 @@ import react from 'react';
 
 import './example.scss';
 
-const ExampleComponent = () => <h1>Example Component</h1>;
+const Example = () => <h1>Example Component</h1>;
 
-export default ExampleComponent;
+export default Example;
 ```
 
 #### • Importing File
@@ -275,7 +275,7 @@ export default useExample;
 import react from 'react';
 import useExample from './example.hook';
 
-const ExampleComponent = () => {
+const Example = () => {
   const { myLogicFn } = useExample();
 
   return <h1>{myLogicFn()}</h1>;
@@ -361,7 +361,7 @@ import {Button} from 'shared/components/buttons'
 import { ExampleSchema } from './example.schema.js';
 import useExample from './example.hook.js';
 
-const ExampleComponent = () => {
+const Example = () => {
   const {handleFormValid} = useExample()
 
   return (
@@ -378,7 +378,7 @@ const ExampleComponent = () => {
   </Formik>)
 };
 
-export default ExampleComponent;
+export default Example;
 ```
 
 if you want to use scroll to error field functionality, you need to use `<FormButton/>` component.
@@ -391,7 +391,7 @@ import { Form, FormField, FormButton } from 'shared/components/form'; // you sho
 import { ExampleSchema } from './example.schema.js';
 import useExample from './example.hook.js';
 
-const ExampleComponent = () => {
+const Example = () => {
   const { handleFormValid } = useExample();
 
   return (
@@ -408,5 +408,164 @@ const ExampleComponent = () => {
   );
 };
 
-export default ExampleComponent;
+export default Example;
 ```
+
+#### • Route Creation
+
+React router dom is a library, most used with reactjs to handle routing in react application. For performance improvement, using react loadable is a good solution. React loadable is a library to handle component splitting in react application. We can combine react loadable and react router to get more performant react application. Here is basic app example of using route and serve `/example` url with server side configuration support.
+
+    ├── src/
+        ├── pages/
+            ├── home/
+                ├── home.js
+                ├── index.js
+            ├── example/
+                ├── example.js
+                ├── index.js
+            ├── not-found/
+                ├── not-found.js
+                ├── index.js
+            ├── main.js
+            ├── main.routes.js
+        ├── shared
+            ├── components
+                ├── route-list.js // you will always use this shared component to render list of route
+    ├── app.js
+    ├── index.js // index.js in our src folder is file that using by create-react-app to determine that the file is root to our application.
+
+```javascript
+//example/example.js
+import react from 'react';
+
+const Example = () => <h1>Example Component</h1>;
+
+export default Example;
+
+// /example/index.js
+export {default} from './example';
+
+// /home/home.js
+import react from 'react';
+
+const Home = () => <h1>Home Component</h1>;
+
+export default Home;
+
+// /home/index.js
+export {default} from './home';
+
+
+// /not-found/not-found.js
+import react from 'react';
+
+const NotFound = () => <h1>Not Found Component</h1>;
+
+export default NotFound;
+
+// /not-found/index.js
+export {default} from './not-found';
+
+// route-list.js
+import React from 'react';
+import { withRouter, Switch, Redirect, Route } from 'react-router-dom';
+
+const RouteList = ({ routes, match, location }) => (
+  <Switch>
+    {routes.map(route => {
+      const routeUrl = match.url === '/' ? `${route.path}` : `${match.url}${route.path}`;
+      return <Route {...route} key={location.pathname} path={routeUrl} />;
+    })}
+    <Route render={() => <Redirect to="/not-found" />} />
+  </Switch>
+);
+
+export default withRouter(RouteList);
+```
+
+```javascript
+
+// main.routes.js
+import React from 'react';
+import Loadable from 'react-loadable';
+import { RouteList } from 'shared/components/route-list.js';
+
+const routes = [
+  {
+    path: '/',
+    exact: true,
+    component: Loadable({
+      loader: () => import(/* webpackChunkName: "home" */ './home'),
+      loading: () => null,
+      modules: ['home']
+    })
+  },
+  {
+    path: '/example',
+    exact: true,
+    component: Loadable({
+      loader: () => import(/* webpackChunkName: "example" */ './example'),
+      loading: () => null,
+      modules: ['example']
+    })
+  },
+  {
+    path: '/not-found',
+    exact: true,
+    component: Loadable({
+      loader: () => import(/* webpackChunkName: "not-found" */ './not-found'),
+      loading: () => null,
+      modules: ['not-found']
+    })
+  }
+];
+
+const MainRoutes = () => <RouteList routes={routes} />;
+
+export default MainRoutes;
+
+// main.js
+import React from 'react';
+import MainRoutes from './main.routes';
+
+const Main = () => <MainRoutes/>
+
+export default Main;
+
+// app.js
+import React from 'react';
+import { render, hydrate } from 'react-dom';
+import Loadable from 'react-loadable';
+import Main from 'pages';
+import { Frontload } from 'react-frontload';
+import { BrowserRouter } from 'react-router-dom';
+
+const App = () => (<BrowserRouter>
+                    <Frontload noServerRender={true}>
+                      <Main />
+                    </Frontload>
+                  </BrowserRouter>)
+
+
+const root = document.querySelector('#root');
+
+export default (() => {
+  if (root.hasChildNodes() === true) {
+    // If it's an SSR, use hydrate to get fast page loads by just
+    // attaching event listeners after the initial render
+    Loadable.preloadReady().then(() => {
+      hydrate(<App />, root);
+    });
+  } else {
+    // If application not running on the server, just render like normal
+    render(<App />, root);
+  }
+})();
+
+// src/index.js
+export { default } from "./app";
+```
+
+**Note**
+
+> As you can see, in `main.routes.js` we are set in route option `exact: true` it means tell react router that our route dont have any sub/child route. For comment `/* webpackChunkName: "not-found" */`, it tells react loadable to rename our chunks/splitted script.
