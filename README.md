@@ -17,6 +17,7 @@
 - [js-cookie](https://github.com/js-cookie/js-cookie) ![JsCookie](https://img.shields.io/badge/v-%5E2.2.0-blue.svg)
 - [Formare](https://github.com/dkk94/formare) ![ReactLoadable](https://img.shields.io/badge/v-%5E0.5.0--beta.29-blue.svg)
 - [Classnames](https://github.com/JedWatson/classnames) ![classnames](https://img.shields.io/badge/v-%5E2.2.6-blue.svg)
+- [React Font Awesome](https://github.com/FortAwesome/react-fontawesome) ![classnames](https://img.shields.io/badge/v-%5E0.1.4-blue.svg)
 
 #### • Main Directory Structure
 
@@ -569,3 +570,108 @@ export { default } from "./app";
 **Note**
 
 > As you can see, in `main.routes.js` we are set in route option `exact: true` it means tell react router that our route dont have any sub/child route. For comment `/* webpackChunkName: "not-found" */`, it tells react loadable to rename our chunks/splitted script.
+
+#### • Add Font Awesome Icon
+
+You can use react font awesome icon component to register and use font awesome icon in your application
+
+    ├── src/
+        ├── pages/
+            ├── example/
+                ├── example.js
+                ├── index.js
+    ...
+
+```javascript
+//example/example.js
+import react from 'react';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+
+const Example = () => <h1>Example Component <FontAwesomeIcon icon="chevron-right"/></h1>;
+
+export default Example;
+
+// /example/index.js
+export {default} from './example';
+```
+
+register your icon in `register-fa-icons` file in global utils folder
+
+```javascript
+// shared/utils/register-fa-icons.util.js
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+
+const registerFaIcons = () => {
+  return library.add(faChevronRight);
+};
+
+export default registerFaIcons;
+```
+
+call the `register-fa-icons.util.js` in `main.js` in the root pages folder.
+
+```javascript
+// main.js
+import React from 'react';
+import MainRoutes from './main.routes';
+import registerFaIcons from 'shared/utils/register-fa-icons.util';
+
+registerFaIcons(); // register font awesome icons
+
+const Main = () => <MainRoutes />;
+
+export default Main;
+```
+
+#### • Script Injection
+
+If you want to inject extenal scripts or external script with url, you can use `<ScriptInjection/>` component
+
+    ├── src/
+        ├── pages/
+            ├── example/
+                ├── example.js
+    ...
+
+```javascript
+//example/example.js
+import react, { Fragment } from 'react';
+import ScriptInjection from 'shared/components/script-injection'; // import script injecrtion component
+
+const Example = () => {
+  return (
+    <Fragment>
+      <h1>Example Component </h1>
+      <ScriptInjection content="alert('custom script')" />
+      <ScriptInjection src="https://my-external-script.com/script.js" />
+    </Fragment>
+  );
+};
+```
+
+#### • Custom SEO Head tag
+
+if you want to inject custom seo content in your specific component, you can use shared `<Head/>` component.
+
+    ├── src/
+        ├── pages/
+            ├── example/
+                ├── example.js
+    ...
+
+```javascript
+//example/example.js
+import react, { Fragment } from 'react';
+import ScriptInjection from 'shared/components/script-injection'; // import script injecrtion component
+import Head from 'shared/components/head';
+
+const Example = () => {
+  return (
+    <Fragment>
+      <Head title="My Example Page" />
+      <h1>Example Component </h1>
+    </Fragment>
+  );
+};
+```

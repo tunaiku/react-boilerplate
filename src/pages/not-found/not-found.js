@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import Head from 'shared/components/head';
+import ScriptInjection from 'shared/components/script-injection';
 
 const NotFound = () => (
   <Fragment>

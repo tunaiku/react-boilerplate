@@ -6,7 +6,6 @@ import fs from 'fs';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import Helmet from 'react-helmet';
-import { Provider } from 'react-redux';
 import StaticRouter from 'react-router-dom/StaticRouter';
 import { Frontload, frontloadServerRender } from 'react-frontload';
 import Loadable from 'react-loadable';
@@ -14,9 +13,8 @@ import cheerio from 'cheerio';
 
 // Our store, entrypoint, and manifest
 import Pages from 'pages';
-import AppStore from 'app.store';
 
-// import manifest from '../build/asset-manifest.json';
+import manifest from '../build/asset-manifest.json';
 
 // LOADER
 module.exports = (req, res) => {
@@ -30,7 +28,6 @@ module.exports = (req, res) => {
     }
 
     // Create a store (with a memory history) from our current url
-    const { store } = AppStore(req.url);
     // set device type to tell our header component what initial header type should render
 
     const context = {};
@@ -52,13 +49,11 @@ module.exports = (req, res) => {
     frontloadServerRender(() =>
       renderToString(
         <Loadable.Capture report={m => modules.push(m)}>
-          <Provider store={store}>
-            <StaticRouter location={req.url} context={context}>
-              <Frontload isServer={true}>
-                <Pages />
-              </Frontload>
-            </StaticRouter>
-          </Provider>
+          <StaticRouter location={req.url} context={context}>
+            <Frontload isServer={true}>
+              <Pages />
+            </Frontload>
+          </StaticRouter>
         </Loadable.Capture>
       )
     ).then(routeMarkup => {
@@ -81,6 +76,20 @@ module.exports = (req, res) => {
         // We need to tell Helmet to compute the right meta tags, title, and such
         const helmet = Helmet.renderStatic();
 
+        // get the extra assets links
+        const extractAssets = (assets, chunks, assetType) => {
+          return Object.keys(assets)
+            .filter(asset => {
+              return chunks.indexOf(asset.replace('.' + assetType, '')) > -1;
+            })
+            .map(k => assets[k]);
+        };
+
+        const cssChunksLink = extractAssets(manifest, modules, 'css');
+        const jsChunksScript = extractAssets(manifest, modules, 'js').map(
+          c => `<script type="text/javascript" async src="/${c.replace(/^\//, '')}"></script>`
+        );
+
         /*
          A simple helper function to prepare the HTML markup. This loads:
          - Page title
@@ -88,10 +97,10 @@ module.exports = (req, res) => {
          - Preloaded state (for Redux) depending on the current route
          - Code-split script tags depending on the current route
         */
-        const injectHTML = (data, { html, title, meta, body, state }) => {
+        const injectHTML = (data, { html, title, meta, body, cssChunk, jsChunks }) => {
           // load html with cheerio
           const $ = cheerio.load(data);
-          let cssFilePath = [];
+          let cssFilePath = [...cssChunk];
           let cssString = [];
 
           // get main style href link
@@ -107,21 +116,21 @@ module.exports = (req, res) => {
           data = data.replace('<html>', `<html ${html}>`);
           data = data.replace(/<title>.*?<\/title>/g, title);
           data = data.replace('</head>', `${meta}<style>${cssString.join('')}</style></head>`);
-          data = data.replace(
-            '<div id="root"></div>',
-            `<div id="root">${body}</div><script>window.__PRELOADED_STATE__ = ${state}</script>`
-          );
-
+          data = data.replace('<div id="root"></div>', `<div id="root">${body}</div>`);
+          data = data.replace('</body>', jsChunks.join('') + '</body>');
           return data;
         };
+        console.log(helmet.script.toString());
+        console.log('oii');
+
         // Pass all this nonsense into our HTML formatting function above
         const html = injectHTML(htmlData, {
           html: helmet.htmlAttributes.toString(),
           title: helmet.title.toString(),
           meta: helmet.meta.toString(),
-          body: routeMarkup,
-          // extraScripts: jsExtraChunksLink,
-          state: JSON.stringify(store.getState()).replace(/</g, '\\u003c')
+          cssChunk: cssChunksLink,
+          jsChunks: jsChunksScript,
+          body: routeMarkup
         });
 
         // We have all the final HTML, let's send it to the user already!

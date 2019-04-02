@@ -13,10 +13,11 @@
     }
   },
   "extends": ["react-app", "plugin:import/errors"],
-  "plugins": ["react", "jsx-a11y", "import"],
+  "plugins": ["react", "jsx-a11y", "import", "react-hooks"],
   "rules": {
     "no-console": "off",
     "max-len": "off",
+    "react-hooks/rules-of-hooks": "error",
     "react/jsx-filename-extension": "off",
     "comma-dangle": "off",
     "import/no-unresolved": "off",
