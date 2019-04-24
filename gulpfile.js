@@ -5,7 +5,7 @@ const svg2z = require('gulp-svg2z');
 
 gulp.task('optimize_assets', () => {
   return gulp
-    .src('./build/media/*')
+    .src('./build/static/media/*')
     .pipe(
       imagemin([
         imagemin.jpegtran({ progressive: true }),
@@ -17,7 +17,7 @@ gulp.task('optimize_assets', () => {
     )
     .pipe(webp())
     .pipe(svg2z())
-    .pipe(gulp.dest('./build/media'));
+    .pipe(gulp.dest('./build/static/media'));
 });
 
 gulp.task('default', gulp.parallel(['optimize_assets']));
